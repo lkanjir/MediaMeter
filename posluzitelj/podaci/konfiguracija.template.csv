@@ -1,0 +1,5 @@
+tajniKljucSesija$xxxxxxxx (tajni kljuc koji se koristi kod kreiranja sesije, string)
+stranicaLimit$x (integer, npr 5)
+tmdbApiKeyV3$xxxxxxxxxxxx (TMDB API kljuc, string)
+email$xxxxxx (email putem kojeg ce se slati aktivacijski kodovi, string)
+emailPass$xxxx (lozinka za slanje maila, string)

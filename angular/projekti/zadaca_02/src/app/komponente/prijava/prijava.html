@@ -1,0 +1,42 @@
+<main class="glavni-kontejner">
+    <div class="kartica">
+        <h1>Prijava</h1>
+
+        @if (registracijskaPoruka()) {
+        <p class="poruka-uspjeh">{{registracijskaPoruka()}}</p>
+        }
+
+        <form [formGroup]="formaPrijava" (ngSubmit)="prijava()">
+            <label for="korime">Korisničko ime:</label>
+            <input formControlName="korime" type="text" id="korime" name="korime" required />
+            @if(korime.invalid && (korime.dirty || korime.touched)){
+            @if(korime.hasError('required')){
+            <p class="greska">Obavezno!</p>
+            }
+            @if (korime.hasError('pattern')) {
+            <p class="greska">Dozvoljeno: slova, broj, točka, minus, donja crta</p>
+            }
+            }
+            <label for="lozinka">Lozinka: </label>
+            <input formControlName="lozinka" type="password" id="lozinka" name="lozinka" required />
+            @if(lozinka.invalid && (lozinka.dirty || lozinka.touched)){
+            @if(lozinka.hasError('required')){
+            <p class="greska">Obavezno!</p>
+            }
+            @if (lozinka.hasError('pattern')) {
+            <p class="greska">Tri ili više znakova, prvi znak ne smije biti razmak.</p>
+            }
+            }
+            <input type="submit" value="Prijava" [disabled]="formaPrijava.invalid || prijavaUTijeku()" />
+        </form>
+
+        <p class="registracija">Nemate račun? <a [routerLink]="['/registracija']">Registrirajte se</a></p>
+        <div>
+            <p>Uloga: registrirani korisnik, korisničko ime: obican lozinka: rwa</p>
+            <p>Uloga: moderator, korisničko ime: moderator lozinka: rwa</p>
+            <p>Uloga: administrator, korisničko ime: admin lozinka: rwa</p>
+        </div>
+    </div>
+
+    <app-greska [poruka]="prijavaGreska()" (zatvori)="prijavaGreska.set(null)"></app-greska>
+</main>

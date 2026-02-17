@@ -1,0 +1,68 @@
+<main class="stranica-filma">
+    <section class="zaglavlje">
+        <img [src]="film().pozadina" id="pozadina" alt="Pozadina filma">
+        <div class="gradijent"></div>
+        <div class="okvir-zaglavlje">
+            <img [src]="film().poster" id="poster" alt="Poster filma">
+            <div class="opis-zaglavlje">
+                <h1 id="naslov">{{film().naslov}}</h1>
+                <h2 id="slogan">{{film().slogan}}</h2>
+                <div class="metapodatci">
+                    <span>Godina izlaska: {{film().godina_izlaska}}</span>
+                    <span>Trajanje: {{film().trajanje}}</span>
+                    <span>Ocjena: {{film().ocjena}}</span>
+                    <span>Budžet: {{film().budzet}}</span>
+                    <span>{{film().zanrovi}}</span>
+                </div>
+
+                <div class="blok-opis">
+                    <p>{{film().opis}}</p>
+                    <p>{{film().kompanije}}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="tijelo-filma">
+
+
+        <div class="kolekcije-odabir">
+            <h2>Dodaj u kolekciju</h2>
+            <div id="poruke-kolekcije"></div>
+            <div [formGroup]="formaKolekcija" class="kontrole-kolekcije">
+                <label for="odabir-kolekcije">Kolekcija</label>
+                <select formControlName="kolekcijaId" id="odabir-kolekcije">
+                    @for (k of kolekcije(); track k.id) {
+                    <option [value]="k.id">{{k.naziv}}</option>
+                    }
+                </select>
+                @if(formaKolekcija.controls.kolekcijaId.invalid && (formaKolekcija.controls.kolekcijaId.dirty ||
+                formaKolekcija.controls.kolekcijaId.touched)){
+                <p class="greska">Odaberite kolekciju!</p>
+                }
+                <label class="label-red">
+                    <input formControlName="javni" type="checkbox" id="javni-sadrzaj">
+                    Javni sadržaj
+                </label>
+                <button (click)="dodajUKolekciju()" [disabled]="formaKolekcija.invalid">Dodaj u kolekciju</button>
+            </div>
+        </div>
+
+        <div id="multimedija-iz-baze" class="blok-multimedija" [class.skriveno]="!pokaziMultimediju()">
+            <h2>Spremljena multimedija</h2>
+            <div id="lista-multimedije">
+                @for (m of multimedija(); track m.id) {
+                @if(m.tip == "video"){
+                <iframe [src]="m.youtube_kljuc ? resursiServis.dajYoutubeUrl(m.youtube_kljuc) : m.putanja"
+                    allowfullscreen [title]="m.naziv || 'Video'"></iframe>
+                }
+                @if(m.tip == "slika"){
+                <img [src]="m.putanja" alt="Slika">
+                }
+                }
+            </div>
+        </div>
+    </section>
+
+    <app-greska [poruka]="greske()" (zatvori)="greske.set(null)"></app-greska>
+</main>

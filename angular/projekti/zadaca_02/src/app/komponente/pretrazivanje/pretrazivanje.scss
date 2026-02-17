@@ -1,0 +1,106 @@
+@use "varijable" as *;
+
+.glavni-kontejner {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: $font-medium;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-weight: $font-regular;
+    color: $sekundarni-tekst;
+  }
+
+  #greske {
+    margin-bottom: 1rem;
+    p {
+      font-size: 1rem;
+      color: $boja-greska;
+    }
+  }
+
+  #pretrazivanje-forma {
+    width: 100%;
+    max-width: 900px;
+    margin: 1.5rem auto;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+
+    input {
+      &[type="text"] {
+        width: 100%;
+        padding: 1rem 1rem 1rem 2rem;
+        border-radius: 100px;
+        border: 1px solid $sekundarni-tekst;
+        font-size: 1rem;
+      }
+
+      &[type="submit"] {
+        background-color: $glavni-tekst;
+        color: $pozadina;
+
+        border-radius: 1rem;
+        border: none;
+        font-size: 1rem;
+        font-weight: $font-semi-bold;
+        padding: 1rem;
+      }
+
+      &.ng-invalid.ng-touched {
+        border-color: $boja-greska;
+      }
+    }
+  }
+
+  table {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    tr {
+      display: flex;
+      flex-direction: column;
+      width: 154px;
+      background-color: white;
+      border-radius: 1rem;
+      box-shadow: $box-shadow;
+
+      .poster {
+        width: 154px;
+        height: 255px;
+        object-fit: cover;
+        background-color: $zelena;
+        display: block;
+        border-radius: 1rem;
+      }
+
+      .podatci-filma {
+        padding: 0.5rem;
+
+        .naslov {
+          font-size: 1rem;
+          font-weight: $font-semi-bold;
+          margin-bottom: 0.3rem;
+        }
+
+        .ocjena {
+          color: $sekundarni-tekst;
+          margin-bottom: 0.2rem;
+        }
+
+        .datum {
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+}

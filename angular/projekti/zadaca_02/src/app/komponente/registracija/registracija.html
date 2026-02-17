@@ -1,0 +1,107 @@
+<main class="glavni-kontejner">
+    <div class="kartica">
+        <h1>Registracija</h1>
+
+        <form [formGroup]="formaRegistracija" (ngSubmit)="registracija()">
+            <label for="korime">Korisiničko ime: </label>
+            <input formControlName="korime" type="text" id="korime" name="korime" required />
+            @if(korime.invalid && (korime.dirty || korime.touched)){
+            @if(korime.hasError('required')){
+            <p class="greska">Obavezno!</p>
+            }
+            @if (korime.hasError('pattern')) {
+            <p class="greska">Dozvoljeno: slova, broj, točka, minus, donja crta</p>
+            }
+            }
+
+            <label for="email">E-mail: </label>
+            <input formControlName="email" type="text" id="email" name="email" required />
+            @if(email.invalid && (email.dirty || email.touched)){
+            @if(email.hasError('required')){
+            <p class="greska">Obavezno!</p>
+            }
+            @if(email.hasError('email')){
+            <p class="greska">Neisprana adresa e-pošte!</p>
+            }
+            @if(email.hasError('maxlength')){
+            <p class="greska">Adresa e-pošte pre velike duljine!</p>
+            }
+
+            }
+
+            <label for="lozinka">Lozinka: </label>
+            <input formControlName="lozinka" type="password" id="lozinka" name="lozinka" required />
+            @if(lozinka.invalid && (lozinka.dirty || lozinka.touched)){
+            @if(lozinka.hasError('required')){
+            <p class="greska">Obavezno!</p>
+            }
+            @if (lozinka.hasError('pattern')) {
+            <p class="greska">Tri ili više znakova, prvi znak ne smije biti razmak.</p>
+            }
+            }
+
+
+            <label for="ime">Ime: </label>
+            <input formControlName="ime" type="text" id="ime" name="ime" />
+            @if(ime.invalid && (ime.dirty || ime.touched)){
+            @if(ime.hasError('maxlength')){
+            <p class="greska">Pre dugo ime!</p>
+            }
+            }
+
+            <label for="prezime">Prezime: </label>
+            <input formControlName="prezime" type="text" name="prezime" id="prezime" />
+            @if(prezime.invalid && (prezime.dirty || prezime.touched)){
+            @if(prezime.hasError('maxlength')){
+            <p class="greska">Pre dugo prezime!</p>
+            }
+            }
+
+            <label for="nadimak">Nadimak: </label>
+            <input formControlName="nadimak" type="text" name="nadimak" id="nadimak" />
+            @if(nadimak.invalid && (nadimak.dirty || nadimak.touched)){
+            @if(nadimak.hasError('maxlength')){
+            <p class="greska">Pre dugi nadimak!</p>
+            }
+            }
+
+            <label for="spol">Spol: </label>
+            <select formControlName="spol" name="spol" id="spol" [disabled]="spoloviUcitavanje()">
+                @for (s of spolovi(); track s.id) {
+                <option [value]="s.id">{{s.naziv}}</option>
+                }
+            </select>
+            @if(spoloviGreska()){
+            <p class="greska">{{spoloviGreska()}}</p>
+            }
+
+            <label for="datrod">Datum rođenja: </label>
+            <input formControlName="datRod" type="text" name="datrod" id="datrod" placeholder="dd.mm.gggg" />
+            @if(datRod.invalid && (datRod.dirty || datRod.touched)){
+            @if(datRod.hasError('pattern')){
+            <p class="greska">Datum mora biti formata dd.mm.gggg.</p>
+            }
+            }
+
+            <label for="adresa">Adresa: </label>
+            <input formControlName="adresa" type="text" name="adresa" id="adresa" />
+            @if(adresa.invalid && (adresa.dirty || adresa.touched)){
+            @if(adresa.hasError('maxlength')){
+            <p class="greska">Pre duga adresa!</p>
+            }
+            }
+
+            <label for="o-meni">O meni: </label>
+            <input formControlName="oMeni" type="text" name="o-meni" id="o-meni" />
+            @if(oMeni.invalid && (oMeni.dirty || oMeni.touched)){
+            @if(oMeni.hasError('maxlength')){
+            <p class="greska">Pre dugi opis!</p>
+            }
+            }
+
+            <input type="submit" value="Kreiraj račun" [disabled]="!formaRegistracija.valid || registracijaUTijeku()" />
+        </form>
+    </div>
+
+    <app-greska [poruka]="registracijaGreska()" (zatvori)="registracijaGreska.set(null)"></app-greska>
+</main>

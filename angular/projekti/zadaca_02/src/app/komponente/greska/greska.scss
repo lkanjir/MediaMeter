@@ -1,0 +1,16 @@
+@use "varijable" as *;
+
+.greska-poruka {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 100;
+  max-width: 350px;
+  text-align: center;
+  padding: 1rem;
+  background-color: $boja-greska;
+  border-radius: 0.8rem;
+  color: $pozadina;
+  font-weight: $font-medium;
+  box-shadow: $box-shadow;
+}

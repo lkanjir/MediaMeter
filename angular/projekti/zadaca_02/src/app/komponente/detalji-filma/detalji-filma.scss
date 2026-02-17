@@ -1,0 +1,189 @@
+@use "varijable" as *;
+
+.stranica-filma {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .zaglavlje {
+    position: relative;
+    border-radius: 1rem;
+    min-height: 320px;
+    box-shadow: $box-shadow;
+
+    h1,
+    h2,
+    p,
+    span {
+      color: $pozadina;
+      font-weight: $font-medium;
+    }
+
+    #pozadina {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 1rem;
+    }
+
+    .gradijent {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.6) 0%,
+        rgba(0, 0, 0, 0.2) 50%,
+        rgba(0, 0, 0, 0.6) 100%
+      );
+      border-radius: 1rem;
+    }
+
+    .okvir-zaglavlje {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 1.25rem;
+      align-items: center;
+      padding: 1.5rem;
+
+      #poster {
+        width: 100%;
+        aspect-ratio: 2 / 3;
+        object-fit: cover;
+        border-radius: 14px;
+        border: 3px solid $pozadina;
+      }
+
+      .opis-zaglavlje {
+        color: $pozadina;
+        display: grid;
+        gap: 1rem;
+
+        h1 {
+          font-size: 2.5rem;
+        }
+
+        h2 {
+          font-size: 1.5rem;
+          color: rgba($color: $pozadina, $alpha: 0.8);
+        }
+
+        span,
+        .blok-opis {
+          background: rgba($color: $pozadina, $alpha: 0.1);
+          border-radius: 100px;
+        }
+
+        .metapodatci {
+          display: flex;
+          gap: 1rem;
+
+          span {
+            padding: 0.5rem 1rem;
+          }
+        }
+
+        .blok-opis {
+          margin-top: 0.5rem;
+          padding: 1rem 3rem;
+          text-align: justify;
+
+          p:nth-child(2) {
+            margin-top: 1rem;
+          }
+        }
+      }
+    }
+  }
+
+  .tijelo-filma {
+    display: grid;
+    gap: 1.5rem;
+
+    .kolekcije-odabir,
+    .blok-multimedija {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: $box-shadow;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .kolekcije-odabir {
+      .kontrole-kolekcije {
+        display: grid;
+        gap: 1rem;
+        align-items: center;
+
+        label {
+          font-weight: $font-medium;
+        }
+
+        select {
+          padding: 0.5rem;
+          border-radius: 0.5rem;
+          border: 1px solid $border-boja;
+          background-color: white;
+
+          &.ng-invalid.ng-touched {
+            border-color: $boja-greska;
+          }
+        }
+
+        .label-red {
+          display: flex;
+          gap: 0.5rem;
+        }
+
+        button {
+          background: $glavni-tekst;
+          color: $pozadina;
+          border: none;
+          border-radius: 100px;
+          padding: 1rem;
+          font-weight: $font-bold;
+          font-size: 1rem;
+          cursor: pointer;
+        }
+
+        .greska {
+          color: $boja-greska;
+        }
+      }
+    }
+
+    .blok-multimedija {
+      #lista-multimedije {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1rem;
+      }
+
+      iframe,
+      img {
+        width: 100%;
+        border-radius: 1rem;
+        box-shadow: $box-shadow;
+        background: $pozadina;
+        border: none;
+      }
+
+      iframe {
+        aspect-ratio: 16 / 9;
+        min-height: 160px;
+      }
+
+      img {
+        object-fit: cover;
+        height: clamp(140px, 18vw, 220px);
+      }
+    }
+  }
+}

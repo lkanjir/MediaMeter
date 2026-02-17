@@ -1,0 +1,79 @@
+@use "varijable" as *;
+
+@mixin forma {
+  .kartica {
+    background-color: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: $box-shadow;
+    font-size: 1rem;
+
+    h1 {
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      font-weight: $font-bold;
+      color: $glavni-tekst;
+      background-color: white;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.3rem;
+      margin-top: 0.8rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 1rem;
+      border: 1px solid $border-boja;
+      outline-style: none;
+
+      &[type="submit"] {
+        background-color: $glavni-tekst;
+        color: $pozadina;
+
+        width: 100%;
+        border-radius: 10px;
+        border: none;
+        font-weight: $font-semi-bold;
+        font-size: 1rem;
+        padding: 1rem;
+        cursor: pointer;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      &.ng-invalid.ng-touched {
+        border-color: $boja-greska;
+      }
+
+      & + .greska {
+        margin-top: 0.3rem;
+        color: $boja-greska;
+      }
+    }
+
+    .ostale-greske {
+      text-align: center;
+      margin: 1rem auto;
+      padding: 1rem;
+      background-color: $boja-greska;
+      border-radius: 1rem;
+      color: $pozadina;
+    }
+
+    .registracija {
+      margin-bottom: 1rem;
+      text-align: center;
+      color: rgba(31, 30, 30, 0.6);
+
+      a {
+        text-decoration: underline;
+        color: $glavni-tekst;
+      }
+    }
+  }
+}

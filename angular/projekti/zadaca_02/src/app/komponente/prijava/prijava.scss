@@ -1,0 +1,14 @@
+@use "varijable" as *;
+@use "prijava_registracija" as *;
+
+:host {
+  @include forma;
+}
+
+.poruka-uspjeh {
+  text-align: center;
+  margin: 1rem auto;
+  padding: 1rem;
+  background-color: $zelena;
+  border-radius: 1rem;
+}

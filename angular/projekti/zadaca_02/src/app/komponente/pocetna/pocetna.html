@@ -1,0 +1,176 @@
+<main class="glavni-kontejner">
+    @if(prijavljen()){
+    <div class="tabovi">
+        <a class="tab" [class.aktivan]="aktivanTab() == 'sadrzaj'" (click)="postaviTab('sadrzaj')">Sadržaji</a>
+        <a class="tab" [class.aktivan]="aktivanTab() == 'kolekcije'" (click)="postaviTab('kolekcije')">Kolekcije</a>
+    </div>
+    }
+
+    <section class="sekcija-kolekcije" [class.skriveno]="aktivanTab() == 'sadrzaj'">
+        <h1>Javne kolekcije</h1>
+        <div class="kolekcije-grid">
+            @for(k of kolekcije(); track k.id){
+            <div class="kartica" (click)="odaberiKolekciju(k.id)" [class.aktivna]="odabranaKolekcija()?.id == k.id">
+                <img [src]="dajSliku(k)" alt="Slika kolekcije">
+                <h3>{{k.naziv}}</h3>
+                <p>{{k.opis}}</p>
+            </div>
+            }
+        </div>
+
+        <div class="gumbi-stranicenje">
+            <button (click)="dajStranicu(-1)" [disabled]="!mozeProslaStranica()">Prošla</button>
+            <span id="brojac-stranice">{{brojac()}}</span>
+            <button (click)="dajStranicu(1)" [disabled]="!mozeSlijedecaStranica()">Slijedeća</button>
+        </div>
+    </section>
+
+    @if(aktivanTab() == 'kolekcije' && odabranaKolekcija()){
+    <section class="detalji-kolekcije">
+        <div class="zaglavlje-detalja">
+            <img [src]="dajSliku(odabranaKolekcija())" alt="Slika kolekcije">
+            <div>
+                <h2>{{odabranaKolekcija()?.naziv}}</h2>
+                <p>{{odabranaKolekcija()?.opis}}</p>
+            </div>
+        </div>
+
+        <div class="lista-filmova">
+            @if(!sadrzajKolekcije().length){
+            <p class="prazno">Kolekcija nema javnih filmova</p>
+            }
+
+            @else {
+            @for(film of sadrzajKolekcije(); track film.id){
+            <div class="kartica-film">
+                <h4>{{film.naslov}}</h4>
+                <div class="meta">
+                    <span>Premijera: {{film.datum_izlaska | date:'dd.MM.yyyy.'}}</span>
+                    <span>Trajanje: {{film.trajanje_min}}min</span>
+                    <span>Ocjena: {{film.ocjena}}</span>
+                </div>
+
+                <p>{{film.opis}}</p>
+
+                <div class="multimedija-prikaz">
+                    @if(!film.multimedija.length){
+                    <p class="meta">Nema javne multimedije za ovaj film</p>
+                    }
+                    @else {
+                    @for (m of film.multimedija; track m.id) {
+                    @if(m.tip == 'video'){
+                    @if(m.youtube_kljuc){
+                    <iframe [src]="resursiServis.dajYoutubeUrl(m.youtube_kljuc)" allowfullscreen
+                        [title]="m.naziv || 'Video'"></iframe>
+                    }
+                    @else {
+                    <a [href]="m.putanja" target="_blank">Otvori video</a>
+                    }
+                    }
+
+                    @if(m.tip =='slika'){
+                    <img [src]="m.putanja" alt="m.naziv">
+                    }
+                    }
+                    }
+                </div>
+            </div>
+            }
+            }
+
+        </div>
+    </section>
+    }
+    <section class="sekcija-sadrzaj" [class.skriveno]="aktivanTab() != 'sadrzaj'">
+        <form [formGroup]="forma" (ngSubmit)="pretrazi()">
+            <label for="naziv">Naziv</label>
+            <input formControlName="naziv" type="text" id="naziv" name="naziv" placeholder="(Naziv, min. 3 znaka)">
+            @if(forma.controls.naziv.invalid && (forma.controls.naziv.dirty || forma.controls.naziv.touched)){
+            <p class="greska">Naziv mora imati barem 3 znaka</p>
+            }
+
+            <label for="autor">Autor</label>
+            <select formControlName="autor" name="autor" id="autor">
+                <option value="">Svi autori</option>
+                @for(a of autori(); track a){
+                <option [value]="a">{{a}}</option>
+                }
+            </select>
+
+            <label for="datum-od">Datum od</label>
+            <input formControlName="datumOd" type="text" name="datum-od" id="datum-od">
+            @if(forma.controls.datumOd.invalid && (forma.controls.datumOd.touched || forma.controls.datumOd.dirty)){
+            <p class="greska">Datum mora biti formata dd.mm.yyyy.</p>
+            }
+
+            <label for="datum-do">Datum do</label>
+            <input formControlName="datumDo" type="text" name="datum-do" id="datum-do">
+            @if(forma.controls.datumDo.invalid && (forma.controls.datumDo.touched || forma.controls.datumDo.dirty)){
+            <p class="greska">Datum mora biti formata dd.mm.yyyy.</p>
+            }
+
+            <input type="submit" value="Pretraži / Filtriraj" [disabled]="forma.invalid">
+        </form>
+
+        <div class="sadrzaj-pretrazivanje">
+            @if(!sadrzaj().length){
+            <p class="prazno" [class.skriveno]="!pretrazivanjeGotovo()">Nema sadržaja za unesene parametre pretraživanja
+                / filtriranja</p>
+            }
+
+            @else {
+            @for (s of sadrzaj(); track s.sadrzaj_id) {
+            <div class="sadrzaj-kartica">
+                <div class="sadrzaj-medij">
+                    @if(s.tip == 'video'){
+                    @if(s.youtube_kljuc){
+                    <iframe [src]="resursiServis.dajYoutubeUrl(s.youtube_kljuc)" allowfullscreen
+                        [title]="s.naziv || 'Video'"></iframe>
+                    }
+                    @else {
+                    <a [href]="s.putanja" target="_blank">Otvori video</a>
+                    }
+                    }
+
+                    @if(s.tip =='slika'){
+                    <img [src]="s.putanja" alt="m.naziv">
+                    }
+                </div>
+
+                <div class="sadrzaj-opis">
+                    <h3>{{s.naziv}}</h3>
+                    <div class="sadrzaj-meta">
+                        <span>Tip: {{s.tip}}</span>
+                        <span>Autor: {{s.autor}}</span>
+                        <span>Kreirano: {{s.kreirano | date:'dd.MM.yyyy.'}}</span>
+
+                        @if(s.kolekcija_id){
+                        <span>Film: {{s.film_naslov}}</span>
+                        <span>Kolekcija: {{s.kolekcija_naziv}}</span>
+                        }
+                        @else {
+                        <p class="sadrzaj-napomena">Ovo je autorov javni sadržaj, ali još nije ni u jednoj kolekciji.
+                        </p>
+                        }
+
+                    </div>
+                </div>
+                @if(s.kolekcija_id){
+                <div class="gumb">
+                    <button (click)="prebaciNaKolekcije(s.kolekcija_id)">Otvori kolekciju</button>
+                </div>
+                }
+            </div>
+            }
+            }
+        </div>
+
+        <div class="gumbi-stranicenje">
+            <button (click)="dajStranicuSadrzaj(-1)" [disabled]="!mozeProslaStranicaSadrzaj()">Prošla</button>
+            <span id="brojac-stranice">{{brojacSadrzaj()}}</span>
+            <button (click)="dajStranicuSadrzaj(1)" [disabled]="!mozeSlijedecaStranicaSadrzaj()">Slijedeća</button>
+        </div>
+    </section>
+
+    <app-greska [poruka]=" greske()" (zatvori)="greske.set(null)"></app-greska>
+</main>

@@ -1,0 +1,81 @@
+<div class="korisnici">
+    <div>
+        <h1>Upravljaj korisnikom</h1>
+        <p class="uputa">
+            Odaberite (klik) korisnika iz tablice za dodatne mogućnosti.
+        </p>
+
+        @if(odabraniKorisnik(); as k){
+        <div id="odabran">
+            <div class="tekst">
+                <p>Tip korisnika: <span>{{format(k.tipKorisnika)}}</span></p>
+                <p>Korisničko ime: <span>{{format(k.korime)}}</span></p>
+                <p>E-mail: <span>{{format(k.email)}}</span></p>
+                <p>Blokiran: <span>{{format(k.jeBlokiran)}}</span></p>
+                <p>Broj pokušaja prijave: <span>{{format(k.neuspjesnePrijave)}}</span></p>
+                <p>Ime: <span>{{format(k.ime)}}</span></p>
+                <p>Prezime: <span>{{format(k.prezime)}}</span></p>
+                <p>Adresa: <span>{{format(k.adresa)}}</span></p>
+                <p>Nadimak: <span>{{format(k.nadimak)}}</span></p>
+                <p>O meni: <span>{{format(k.omeni)}}</span></p>
+                <p>Spol: <span>{{format(k.spol)}}</span></p>
+                <p>Datum rođenja: <span>{{k.datum_rodjenja ? (k.datum_rodjenja | date:'dd.MM.yyyy.') : "-"}}</span></p>
+            </div>
+
+            <div class="gumbi">
+                <button id="gumb-blokiraj" [disabled]="!gumbiUkljuceni()"
+                    (click)="blokirajKorisnika()">{{tekstBlokiraj()}}</button>
+                <button id="gumb-daj-moderator" [disabled]="!gumbiUkljuceni()"
+                    (click)="promijeniUloguKorisnika()">{{tekstPromijeniUlogu()}}</button>
+            </div>
+        </div>
+        }
+    </div>
+
+    <table id="svi-korisnici">
+        <thead>
+            <tr>
+                <td>Tip korisnika</td>
+                <td>Korisničko ime</td>
+                <td>E-mail</td>
+                <td>Blokiran</td>
+                <td>Broj pokušaja prijave</td>
+                <td>Ime</td>
+                <td>Prezime</td>
+                <td>Adresa</td>
+                <td>Nadimak</td>
+                <td>O meni</td>
+                <td>Spol</td>
+                <td>Datum rođenja</td>
+            </tr>
+        </thead>
+        <tbody id="tijelo-tablice">
+            @for (k of korisnici(); track k) {
+            <tr (click)="odaberi(k)" [class.blokiran]="k.jeBlokiran == 'Da'"
+                [class.odabran]="odabraniKorisnik()?.korime == k.korime">
+
+                <td>{{format(k.tipKorisnika)}}</td>
+                <td>{{format(k.korime)}}</td>
+                <td>{{format(k.email)}}</td>
+                <td>{{format(k.jeBlokiran)}}</td>
+                <td>{{format(k.neuspjesnePrijave)}}</td>
+                <td>{{format(k.ime)}}</td>
+                <td>{{format(k.prezime)}}</td>
+                <td>{{format(k.adresa)}}</td>
+                <td>{{format(k.nadimak)}}</td>
+                <td>{{format(k.omeni)}}</td>
+                <td>{{format(k.spol)}}</td>
+                <td>{{k.datum_rodjenja ? (k.datum_rodjenja | date:'dd.MM.yyyy.') : "-"}}</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="gumbi-stranicenje">
+        <button (click)="dajStranicu(-1)" [disabled]="!mozeProslaStranica()">Prošla</button>
+        <span id="brojac-stranice">{{brojac()}}</span>
+        <button (click)="dajStranicu(1)" [disabled]="!mozeSlijedecaStranica()">Slijedeća</button>
+    </div>
+
+    <app-greska [poruka]="greske()" (zatvori)="greske.set(null)"></app-greska>
+</div>

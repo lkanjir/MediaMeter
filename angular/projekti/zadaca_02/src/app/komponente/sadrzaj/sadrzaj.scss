@@ -1,0 +1,106 @@
+@use "varijable" as *;
+@use "tablice" as *;
+
+.sadrzaj-kontejner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+  display: grid;
+  gap: 1.5rem;
+
+  a {
+    text-decoration: underline !important;
+  }
+
+  .upload-kartica,
+  .pregled-kartica {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: $box-shadow;
+  }
+
+  .upload-kartica {
+    h1 {
+      margin-bottom: 1rem;
+    }
+
+    #forma-sadrzaj {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      .polje {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      label {
+        font-weight: $font-medium;
+      }
+
+      input,
+      select {
+        &.ng-invalid.ng-touched {
+          border-color: $boja-greska;
+        }
+      }
+
+      .greska {
+        color: $boja-greska;
+      }
+
+      input[type="text"],
+      select {
+        padding: 0.8rem;
+        border: 1px solid $border-boja;
+        border-radius: 0.8rem;
+        font-size: 1rem;
+      }
+
+      input[type="file"] {
+        padding: 0.8rem;
+        font-size: 1rem;
+      }
+
+      input[type="submit"] {
+        align-self: flex-start;
+        background: $glavni-tekst;
+        color: $pozadina;
+        padding: 1rem 1.5rem;
+        border: none;
+        border-radius: 0.8rem;
+        font-weight: $font-semi-bold;
+        cursor: pointer;
+      }
+
+      .dvostruko {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+      }
+    }
+  }
+
+  @include tablica("#tablica-sadrzaj", "#tijelo-tablice");
+
+  .pregled-kartica {
+    h2 {
+      margin-bottom: 1rem;
+    }
+  }
+
+  #tijelo-tablice {
+    button {
+      background-color: $glavni-tekst;
+      color: $pozadina;
+      font-weight: $font-semi-bold;
+
+      border-radius: 0.8rem;
+      border: none;
+      padding: 1rem;
+    }
+  }
+}

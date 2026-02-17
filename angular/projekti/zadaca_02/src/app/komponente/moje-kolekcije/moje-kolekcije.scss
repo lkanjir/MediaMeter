@@ -1,0 +1,256 @@
+@use "varijable" as *;
+@use "lokalni-video" as *;
+
+@mixin gumb {
+  button {
+    background-color: $glavni-tekst;
+    color: $pozadina;
+    font-weight: $font-semi-bold;
+    cursor: pointer;
+    border-radius: 0.8rem;
+    border: none;
+    padding: 0.6rem 1rem;
+  }
+}
+
+.kolekcije-kontejner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+  display: grid;
+  gap: 1.5rem;
+
+  .poruka {
+    color: $sekundarni-tekst;
+  }
+
+  .moje-kolekcije {
+    background-color: white;
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: $box-shadow;
+
+    h1 {
+      margin-bottom: 1.5rem;
+    }
+
+    .kolekcije-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, 160px);
+
+      .kolekcija-kartica {
+        background-color: $pozadina;
+        border-radius: 1rem;
+        padding: 0.7rem;
+        cursor: pointer;
+        text-align: left;
+
+        img {
+          width: 100%;
+          aspect-ratio: 3 / 4;
+          border-radius: 1rem;
+          object-fit: cover;
+        }
+
+        .naziv {
+          margin-top: 0.3rem;
+          font-weight: $font-semi-bold;
+        }
+
+        .oznaka {
+          color: $sekundarni-tekst;
+          font-size: 0.9rem;
+        }
+
+        &.odabrana {
+          border: 1px solid $glavni-tekst;
+        }
+      }
+    }
+  }
+
+  .detalji-kolekcije {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: $box-shadow;
+
+    .zaglavlje-kolekcije {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      align-items: center;
+      gap: 2rem;
+
+      img {
+        width: 100%;
+        aspect-ratio: 3/4;
+        border-radius: 1rem;
+        object-fit: cover;
+      }
+
+      p {
+        color: $sekundarni-tekst;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .javni-red {
+        display: flex;
+        gap: 1rem;
+        margin-top: 0.7rem;
+        margin-bottom: 0.5rem;
+      }
+
+      input[type="file"] {
+        margin-bottom: 1rem;
+      }
+
+      input[type="submit"] {
+        padding: 0.5rem 1rem;
+        border-radius: 0.8rem;
+        border: none;
+        background: $glavni-tekst;
+        color: $pozadina;
+        font-weight: $font-semi-bold;
+        cursor: pointer;
+        max-width: 30%;
+      }
+    }
+
+    .sadrzaj-kolekcije {
+      margin-top: 2rem;
+
+      .kartice-filmova {
+        display: grid;
+        gap: 1rem;
+
+        .kartica-film {
+          margin-top: 2rem;
+          background-color: $pozadina;
+          border-radius: 1rem;
+          padding: 1.5rem;
+          display: grid;
+          gap: 0.5rem;
+
+          .detalji-filma {
+            .oznake {
+              display: flex;
+              gap: 0.3rem;
+              margin-bottom: 0.5rem;
+
+              span {
+                padding: 0.4rem 0.7rem;
+                background-color: white;
+                border-radius: 100px;
+                box-shadow: $box-shadow;
+                color: $sekundarni-tekst;
+              }
+            }
+          }
+
+          .multimedija-pregled {
+            display: grid;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 2rem;
+
+            @include link();
+
+            iframe {
+              aspect-ratio: 16 / 9;
+            }
+
+            img,
+            iframe {
+              border-radius: 1rem;
+              max-height: 500px;
+              margin: 0 auto;
+            }
+
+            iframe {
+              aspect-ratio: 16 / 9;
+              width: 100%;
+            }
+          }
+        }
+
+        .multimedija-odabir {
+          display: grid;
+          gap: 1rem;
+          grid-template-columns: auto auto;
+
+          select {
+            border: $border-boja;
+            border-radius: 0.8rem;
+          }
+
+          @include gumb;
+        }
+
+        .gumbi-film {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0.6rem;
+
+          @include gumb;
+          button {
+            font-size: 1rem;
+
+            &.obrisi {
+              background: $boja-greska;
+            }
+          }
+        }
+      }
+    }
+
+    .dodaj-vlastiti-film {
+      margin-top: 2rem;
+      background-color: $zelena;
+      padding: 2rem;
+      border-radius: 1rem;
+
+      h3 {
+        font-size: x-large;
+        font-weight: $font-semi-bold;
+        margin-bottom: 1rem;
+      }
+
+      form {
+        display: grid;
+        gap: 0.6rem;
+        grid-template-columns: auto auto;
+
+        input,
+        textarea {
+          padding: 1rem;
+          border-radius: 0.8rem;
+          border: 1px solid $border-boja;
+        }
+
+        .javni-red {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          justify-content: center;
+        }
+
+        input[type="submit"] {
+          grid-column: span 2;
+          background-color: $glavni-tekst;
+          color: $pozadina;
+          font-weight: $font-semi-bold;
+          cursor: pointer;
+          border-radius: 0.8rem;
+          border: none;
+          padding: 0.6rem 1rem;
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+}

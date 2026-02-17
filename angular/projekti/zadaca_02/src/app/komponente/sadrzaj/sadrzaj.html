@@ -1,0 +1,94 @@
+<main class="sadrzaj-kontejner">
+    <div class="upload-kartica">
+        <h1>Moja multimedija</h1>
+
+        <form [formGroup]="forma" (ngSubmit)="kreirajSadrzaj()" id="forma-sadrzaj" enctype="multipart/form-data">
+            <div class="polje">
+                <label for="naziv">Naziv</label>
+                <input formControlName="naziv" type="text" id="naziv" name="naziv"
+                    placeholder="npr. poster, slika, itd." required>
+                @if (naziv.invalid && (naziv.dirty || naziv.touched)) {
+                @if(naziv.hasError('required')){
+                <p class="greska">Obavezno!</p>
+                }
+                @if(naziv.hasError('maxlength')){
+                <p class="greska">Maksimalna duljina: 500 znakova!</p>
+                }
+                }
+
+            </div>
+            <div class=" polje dvostruko">
+                <label for="tip">Tip sadržaja</label>
+                <select formControlName="tip" id="tip" name="tip">
+                    <option value="slika">Slika</option>
+                    <option value="video">Video</option>
+                </select>
+            </div>
+            <div class="polje dvostruko">
+                <label for="privatan">Privatno</label>
+                <input formControlName="privatno" type="checkbox" id="privatan" name="privatan">
+            </div>
+            <div class="polje dvostruko">
+                <label for="datoteka">Datoteka</label>
+                <input (change)="datotekaOdabrana($event)" (blur)="datotekaDodirnuta()" type="file" id="datoteka"
+                    name="datoteka" accept="image/*,video/*" required>
+
+                @if (datoteka.invalid && (datoteka.dirty || datoteka.touched)) {
+                @if(datoteka.hasError('required')){
+                <p class="greska">Obavezno!</p>
+                }
+                }
+            </div>
+            <input type="submit" value="Prenesi sadržaj" [disabled]="forma.invalid || uploadUTijeku()">
+        </form>
+    </div>
+
+    <div class="pregled-kartica">
+        <div class="zaglavlje-sekcije">
+            <h2>Moji sadržaji</h2>
+        </div>
+
+        <table id="tablica-sadrzaj">
+            <thead>
+                <tr>
+                    <td>Naziv</td>
+                    <td>Tip</td>
+                    <td>Veličina</td>
+                    <td>Putanja</td>
+                    <td>Kreirano</td>
+                    <td>Vidljivost</td>
+                    <td>Akcija</td>
+                </tr>
+            </thead>
+            <tbody id="tijelo-tablice">
+                @if(!sadrzaj().length){
+                <tr>
+                    <td colspan="7">Nema prenesenih sadržaja</td>
+                </tr>
+                }
+                @else {
+                @for (s of sadrzaj(); track s.id) {
+                <tr>
+                    <td>{{s.naziv}}</td>
+                    <td>{{s.tip}}</td>
+                    <td>{{formatirajVelicinu(s.velicina_bajt)}}</td>
+                    <td><a [href]="'/'+s.putanja" target="_blank">Otvori</a></td>
+                    <td>{{s.kreirano | date:'dd.MM.yyyy.'}}</td>
+                    <td>{{s.privatan ? "Privatno" : "Javno"}}</td>
+                    <td><button (click)="promijeniVidljivost(s)">{{s.privatan ? "Postavi javno" :
+                            "Postavi privatno"}}</button></td>
+                </tr>
+                }
+                }
+            </tbody>
+        </table>
+
+        <div class="gumbi-stranicenje">
+            <button (click)="dajStranicu(-1)" [disabled]="!mozeProslaStranica()">Prošla</button>
+            <span id="brojac-stranice">{{brojac()}}</span>
+            <button (click)="dajStranicu(1)" [disabled]="!mozeSlijedecaStranica()">Slijedeća</button>
+        </div>
+    </div>
+
+    <app-greska [poruka]="greske()" (zatvori)="greske.set(null)"></app-greska>
+</main>

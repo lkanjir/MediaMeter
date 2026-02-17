@@ -1,0 +1,137 @@
+<main class="kolekcije-kontejner">
+    <section class="moje-kolekcije">
+        <h1>Moje kolekcije</h1>
+        @if(!kolekcije().length){
+        <p class="poruka">Nemate niti jednu kolekciju</p>
+        }
+
+        <div class="kolekcije-grid">
+            @for(k of kolekcije(); track k.id){
+            <div (click)="odaberiKolekciju(k)" [class.odabrana]="odabranaKolekcija()?.id == k.id"
+                class="kolekcija-kartica">
+                <img [src]="k.slika_putanja || '/resursi/poster.png'" alt="Slika kolekcije">
+                <div class="naziv">{{k.naziv}}</div>
+                <div class="oznaka">{{k.javna_kolekcija ? "Javna" : "Privatna"}}</div>
+            </div>
+            }
+        </div>
+    </section>
+
+
+
+    @if (odabranaKolekcija()) {
+    <section class="detalji-kolekcije">
+        <div id="detalji">
+            <div class="zaglavlje-kolekcije">
+                <img [src]="odabranaKolekcija()?.slika_putanja || 'resursi/poster.png'" alt="">
+                <form [formGroup]="formaPostavke" (ngSubmit)="spremiPostavkeKolekcije()" class="podaci-kolekcije">
+                    <h2>{{odabranaKolekcija()?.naziv}}</h2>
+                    <p>{{odabranaKolekcija()?.opis}}</p>
+                    <div class="javni-red">
+                        <label for="javna-kolekcija">Javna kolekcija</label>
+                        <input type="checkbox" id="javna-kolekcija" formControlName="javna">
+                    </div>
+                    <input type="file" (change)="posatviNovuSliku($event)">
+                    <input type="submit" value="Spremi promjene">
+                </form>
+            </div>
+
+            <div class="sadrzaj-kolekcije">
+                @if (!sadrzajKolekcije().length) {
+                <p class="poruka">Kolekcija je prazna</p>
+                }
+
+                <div class="kartice-filmova">
+                    @for (s of sadrzajKolekcije(); track s.id) {
+                    <div class="kartica-film">
+                        <h4>{{s.naslov}}</h4>
+                        <div class="detalji-filma">
+                            <div class="oznake">
+                                <span>{{s.javni_sadrzaj ? "Javan" : "Privatan"}}</span>
+                                <span>Godina: {{s.datum_izlaska | date:'dd.MM.yyyy.'}}</span>
+                                <span>Trajanje: {{s.trajanje_min ? `${s.trajanje_min}min` : '-' }}</span>
+                                <span>Ocjena: {{s.ocjena ? s.ocjena : '-'}}</span>
+                            </div>
+                            <p>{{s.opis || "Nema opisa"}}</p>
+                        </div>
+
+                        <div class="multimedija-pregled">
+                            @if(!s.multimedija.length){
+                            <p class="poruka">Nema multimedije</p>
+                            }
+
+                            @else {
+                            @for (m of s.multimedija; track m.id) {
+
+                            @if(m.tip == 'video'){
+                            @if(m.youtube_kljuc){
+                            <iframe [src]="resursiServis.dajYoutubeUrl(m.youtube_kljuc)" allowfullscreen
+                                [title]="m.naziv || 'Video'"></iframe>
+                            }
+                            @else {
+                            <a [href]="m.putanja" target="_blank">Otvori video</a>
+                            }
+                            }
+
+                            @if(m.tip == 'slika'){
+                            <img [src]="m.putanja" [alt]="m.naziv">
+                            }
+
+                            }
+                            }
+                        </div>
+                    </div>
+
+                    <div class="multimedija-odabir">
+                        <select (change)="postaviOdabranuSliku(s.id, $event.target)" name="odabir-slike"
+                            id="odabir-slike">
+                            <option value="">Dodajte sliku kroz Sadržaj pa odaberite s popisa</option>
+                            @for (slika of filtrirajSadrzajPoTipu('slika'); track slika.id){
+                            <option [value]="slika.id">{{slika.naziv}}</option>
+                            }
+                        </select>
+                        <button (click)="dodajSlikuZaFilm(s.id)">Dodaj sliku</button>
+
+
+                        <select (change)="postaviOdabraniVideo(s.id, $event.target)" name="odabir-videa"
+                            id="odabir-videa">
+                            <option value="">Dodajte video kroz Sadržaj pa odaberite s popisa</option>
+                            @for (video of filtrirajSadrzajPoTipu('video'); track video.id){
+                            <option [value]="video.id">{{video.naziv}}</option>
+                            }
+                        </select>
+                        <button (click)="dodajVideoZaFilm(s.id)">Dodaj video</button>
+                    </div>
+
+                    <div class="gumbi-film">
+                        <button (click)="promijeniVidljivost(s.id, !s.javni_sadrzaj)">{{s.javni_sadrzaj ? "Postavi
+                            privatno" : "Postavi javno"}}</button>
+                        <button (click)="obrisiFilm(s.id)" class="obrisi">Obriši</button>
+                    </div>
+                    }
+                </div>
+            </div>
+
+            <div class="dodaj-vlastiti-film">
+                <h3>Dodaj vlastiti film</h3>
+                <form [formGroup]="formaFilm" (ngSubmit)="dodajLokalniFilm()">
+                    <input formControlName="naslov" type="text" placeholder="Naslov" required>
+                    <input formControlName="datum" type="text" placeholder="Datum izlaska: dd.mm.yyyy.">
+                    <input type="number" min="1" formControlName="trajanje" placeholder="Trajanje (min)">
+                    <input type="number" min="1" formControlName="ocjena" placeholder="Ocjena (1 do 10)">
+                    <textarea name="opis" id="opis" formControlName="opis" placeholder="Opis"></textarea>
+                    <div class="javni-red">
+                        <label for="lokalni-javni">Javan sadržaj</label>
+                        <input type="checkbox" id="lokalni-javni" formControlName="javni">
+                    </div>
+
+                    <input type="submit" value="Dodaj film">
+                </form>
+            </div>
+        </div>
+    </section>
+    }
+
+
+    <app-greska [poruka]="greske()" (zatvori)="greske.set(null)"></app-greska>
+</main>

@@ -1,0 +1,46 @@
+{
+	"name": "zadaca_01",
+	"version": "1.0.0",
+	"description": "",
+	"main": "build/server.js",
+	"type": "module",
+	"scripts": {
+		"pripremi": "npm link --save --package-lock false express  express-session cookie-parser sqlite3 sqlite cors jsonwebtoken nodemailer base32-encoding totp-generator formidable",
+		"compile": "tsc --watch false",
+		"copy-files": "copyfiles -u 1 src/**/*.html src/**/*.css src/**/*.jpg src/**/*.webp src/**/*.png 'src/**/*.js' build/",
+		"clean": "rm -r build/*",
+		"server": "node build/server.js podaci/konfiguracija.csv",
+		"start": "npm run server",
+		"start-spider": "npm run pripremi && npm run server",
+		"start-local": "npm run clean; npm run compile && npm run copy-files && npm run server",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"zadaca": "node build/server.js podaci/konfiguracija.csv"
+	},
+	"author": "Luka Kanjir",
+	"license": "ISC",
+	"dependencies": {
+		"base32-encoding": "file:../../../../../usr/lib/node_modules/base32-encoding",
+		"better-sqlite3": "file:../../../../../usr/lib/node_modules/better-sqlite3",
+		"cookie-parser": "file:../../../../../usr/lib/node_modules/cookie-parser",
+		"cors": "file:../../../../../usr/lib/node_modules/cors",
+		"express": "file:../../../../../usr/lib/node_modules/express",
+		"express-session": "file:../../../../../usr/lib/node_modules/express-session",
+		"formidable": "file:../../../../../usr/lib/node_modules/formidable",
+		"jsonwebtoken": "file:../../../../../usr/lib/node_modules/jsonwebtoken",
+		"nodemailer": "file:../../../../../usr/lib/node_modules/nodemailer",
+		"sqlite": "file:../../../../../usr/lib/node_modules/sqlite",
+		"sqlite3": "file:../../../../../usr/lib/node_modules/sqlite3",
+		"totp-generator": "file:../../../../../usr/lib/node_modules/totp-generator"
+	},
+	"devDependencies": {
+		"@types/cookie-parser": "^1.4.10",
+		"@types/cors": "^2.8.19",
+		"@types/express": "^4.17.25",
+		"@types/express-serve-static-core": "^4.19.8",
+		"@types/express-session": "^1.18.2",
+		"@types/formidable": "^3.4.6",
+		"@types/node": "^25.2.3",
+		"@types/nodemailer": "^7.0.10",
+		"typescript": "^5.9.3"
+	}
+}

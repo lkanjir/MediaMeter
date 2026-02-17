@@ -1,0 +1,17 @@
+@use "varijable" as *;
+@use "prijava_registracija" as *;
+
+:host {
+  @include forma;
+}
+
+select {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid rgb(195, 191, 191);
+  font-size: 1rem;
+  outline-style: none;
+  background-color: white;
+  color: $glavni-tekst;
+}

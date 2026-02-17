@@ -1,0 +1,47 @@
+@use "varijable" as *;
+@mixin tablica(
+  $tablica-selektor,
+  $tijelo-selektor,
+  $hover-boja: $zelena,
+  $header-boja: $plava
+) {
+  #{$tablica-selektor} {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    overflow: hidden;
+    box-shadow: $box-shadow;
+    font-size: 1rem;
+
+    thead {
+      background-color: $header-boja;
+
+      td {
+        font-weight: $font-semi-bold;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        padding: 0.8rem;
+        color: $sekundarni-tekst;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+      }
+    }
+
+    tbody td {
+      padding: 0.8rem;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+    }
+  }
+
+  #{$tijelo-selektor} tr {
+    transition: background-color 0.1s ease;
+
+    &:hover {
+      background-color: $hover-boja;
+      cursor: pointer;
+    }
+
+    &.odabran {
+      background-color: $hover-boja;
+    }
+  }
+}

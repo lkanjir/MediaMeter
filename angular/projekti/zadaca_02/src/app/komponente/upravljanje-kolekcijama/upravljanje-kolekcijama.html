@@ -1,0 +1,125 @@
+<div class="dodaj-kolekciju">
+    <div id="dodavanje-kolekcije">
+        <h2>Kreiranje kolekcija</h2>
+        <form enctype="multipart/form-data" [formGroup]="formaKreiranjeKolekcije" (ngSubmit)="kreirajKolekciju()">
+            <label for="naziv">Naziv kolekcije: </label>
+            <input formControlName="naziv" type="text" name="naziv" id="naziv" required>
+            @if(naziv.invalid && (naziv.dirty || naziv.touched)){
+            @if(naziv.hasError('required')){
+            <p class="greska">Obavezno!</p>
+            }
+            @if(naziv.hasError('maxlength')){
+            <p class="greska">Pre dugi naziv!</p>
+            }
+            }
+
+            <div class="javna-red">
+                <label for="javna">Javna kolekcija?</label>
+                <input formControlName="javna" type="checkbox" id="javna" name="javna">
+            </div>
+
+
+            <label for="opis">Opis kolekcije:</label>
+            <input formControlName="opis" type="text" id="opis" name="opis">
+            @if(opis.invalid && (opis.dirty || opis.touched)){
+            @if(opis.hasError('maxlength')){
+            <p class="greska">Pre dugi opis!</p>
+            }
+            }
+
+            <label for="slika">Slika kolekcije: </label>
+            <input type="file" name="slika" id="slika" required (change)="slikaOdabrana($event)"
+                (blur)="slikaDodirnuta()">
+            @if(slika.invalid && (slika.dirty || slika.touched)){
+            @if(slika.hasError('required')){
+            <p class="greska">Slika je obavezna!</p>
+            }
+            }
+
+            <input type="submit" value="Kreiraj" [disabled]="!formaKreiranjeKolekcije.valid">
+        </form>
+    </div>
+</div>
+
+<div class="kolekcije">
+    <table id="tablica-kolekcije">
+        <thead>
+            <tr>
+                <td>ID</td>
+                <td>Slika</td>
+                <td>Naziv</td>
+                <td>Javna</td>
+                <td>Opis</td>
+            </tr>
+        </thead>
+        <tbody id="tijelo-tablice">
+            @for (k of kolekcije(); track k.id) {
+            <tr (click)="odaberi(k)" [class.odabran]="odabranaKolekcija()?.id == k.id">
+                <td>{{k.id}}</td>
+                <td><img [src]="k.slika_putanja" alt="Slika kolekcije"></td>
+                <td>{{k.naziv}}</td>
+                <td>{{k.javna_kolekcija ? "Da" : "Ne"}}</td>
+                <td>{{k.opis == "" ? "-" : k.opis}}</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="gumbi-stranicenje">
+        <button (click)="dajStranicu(-1)" [disabled]="!mozeProsleKolekcije()">Prošla</button>
+        <span>{{brojac()}}</span>
+        <button (click)="dajStranicu(1)" [disabled]="!mozeSlijedceKolekcije()">Slijedeća</button>
+    </div>
+</div>
+
+<div class="clanovi-kolekcije">
+    <h2>Članovi kolekcije</h2>
+    <p>Odaberite kolekciju iz tablice da bi mogli dodati korisnika</p>
+    <form [formGroup]="formClanovi" (ngSubmit)="dodajClana()">
+        <label for="korime">Korisničko ime</label>
+        <input formControlName="korime" type="text" id="korime" name="korime" required>
+
+        <label for="uloga">Uloga člana:</label>
+        <select formControlName="uloga" id="uloga" name="uloga">
+            <option value="1">Vlasnik</option>
+            <option value="2">Član</option>
+        </select>
+        <input type="submit" value="Dodaj korisnika" [disabled]="!formClanovi.valid || odabranaKolekcija() == null">
+    </form>
+
+    <table id="tablica-clanova">
+        <thead>
+            <tr>
+                <td>Korisničko ime</td>
+                <td>Uloga</td>
+                <td>Akcije</td>
+            </tr>
+        </thead>
+        <tbody id="tijelo-clanova">
+            @if (!clanoviKolekcije()?.length) {
+            <tr>
+                <td colspan="3">Nema članova</td>
+            </tr>
+            }
+            @else {
+            @for (c of clanoviKolekcije(); track c.korisnik_id) {
+            <tr>
+                <td>{{c.korime}}</td>
+                <td>{{c.uloga}}</td>
+                <td>
+                    <button (click)="obrisiClanaIzKolekcije(c)" class="btn-obrisi">Ukloni</button>
+                </td>
+            </tr>
+            }
+            }
+        </tbody>
+    </table>
+
+    <div class="gumbi-stranicenje">
+        <button (click)="dajStranicuClanova(-1)" [disabled]="!mozeProsleClanove()">Prošla</button>
+        <span>{{brojacClanovi()}}</span>
+        <button (click)="dajStranicuClanova(1)" [disabled]="!mozeSlijedeceClanove()">Sljedeća</button>
+    </div>
+
+    <app-greska [poruka]="greske()" (zatvori)="greske.set(null)"></app-greska>
+</div>

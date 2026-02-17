@@ -1,0 +1,27 @@
+@use "varijable" as *;
+
+.navigacija {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2rem 4rem;
+
+  font-size: 1.1rem;
+  font-weight: $font-medium;
+  letter-spacing: 1px;
+
+  .navigacija-lijevo {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    opacity: 0.6;
+  }
+
+  .gumb-prijava {
+    background: $glavni-tekst;
+    color: $pozadina;
+    font-weight: $font-bold;
+    padding: 1rem;
+    border-radius: 100px;
+  }
+}

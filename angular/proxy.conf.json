@@ -1,0 +1,19 @@
+{
+  "/api": {
+    "target": "http://localhost:12222",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/sadrzaj": {
+    "target": "http://localhost:12222",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/resursi": {
+    "target": "http://localhost:12222",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

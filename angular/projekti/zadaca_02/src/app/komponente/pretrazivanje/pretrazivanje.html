@@ -1,0 +1,39 @@
+<main class="glavni-kontejner">
+    <h1>Pretraživanje filmova</h1>
+    <h2>Unesite naslov filma</h2>
+
+    <form id="pretrazivanje-forma" [formGroup]="formaPretrazivanje" (ngSubmit)="pretrazi()">
+        <input formControlName="naziv" type="text" required />
+        <input type="submit" value="Pretraži" [disabled]="!naziv.valid" />
+    </form>
+
+    <div id="greske">
+        @if(naziv.invalid && (naziv.dirty || naziv.touched)){
+        @if(naziv.hasError('required')){
+        <p class="greska">Unesite naziv filma!</p>
+        }
+        }
+    </div>
+
+    <table id="filmovi">
+        @for (f of filmovi(); track f.tmdb_id) {
+        <tr (click)="otvoriDetaljeFilma(f)">
+            <td><img class="poster" [src]="f.poster" alt=""></td>
+            <td class="podatci-filma">
+                <p class="naslov">{{f.naslov}}</p>
+                <p class="ocjena">{{f.ocjena.toFixed(1)}} / 10</p>
+                <p class="datum">Premijera: {{f.datum_izlaska | date:'dd.MM.yyyy.'}}</p>
+            </td>
+
+        </tr>
+        }
+    </table>
+
+    <div class="gumbi-stranicenje" [class.skriveno]="!pokaziStranicenje()">
+        <button (click)="dajStranicu(-1)" [disabled]="!mozeProslaStranica()">Prošla</button>
+        <span id="brojac-stranice">{{brojac()}}</span>
+        <button (click)="dajStranicu(1)" [disabled]="!mozeSlijedecaStranica()">Slijedeća</button>
+    </div>
+
+    <app-greska [poruka]="greske()" (zatvori)="greske.set(null)"></app-greska>
+</main>

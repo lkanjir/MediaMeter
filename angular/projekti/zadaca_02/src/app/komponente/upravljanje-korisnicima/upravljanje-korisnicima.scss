@@ -1,0 +1,82 @@
+@use "varijable" as *;
+@use "tablice" as *;
+
+.korisnici {
+  max-width: 1200px;
+  margin: 2rem auto;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 2rem;
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .uputa {
+    color: $sekundarni-tekst;
+    margin-bottom: 1rem;
+  }
+
+  #odabran {
+    max-width: 600px;
+    background-color: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin: 0.5rem auto;
+    box-shadow: $box-shadow;
+
+    .gumbi {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+
+      #gumb-blokiraj {
+        background-color: $boja-greska;
+        color: $pozadina;
+      }
+    }
+
+    button {
+      margin-top: 2rem;
+      padding: 1rem;
+      border-radius: 100px;
+      border: none;
+      font-size: 1rem;
+      font-weight: $font-semi-bold;
+      cursor: pointer;
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+    }
+  }
+
+  .tekst {
+    display: grid;
+    grid-template-columns: auto auto;
+    row-gap: 0.5rem;
+    text-align: left;
+    justify-content: center;
+
+    p {
+      display: contents;
+      gap: 1rem;
+      margin: 0.5rem 4rem 1.5rem 4rem;
+      color: $sekundarni-tekst;
+    }
+
+    span {
+      text-align: left;
+      font-weight: $font-medium;
+      color: $glavni-tekst;
+      margin-left: 2rem;
+    }
+  }
+
+  @include tablica("#svi-korisnici", "#tijelo-tablice");
+  .blokiran {
+    background-color: $roza;
+  }
+}

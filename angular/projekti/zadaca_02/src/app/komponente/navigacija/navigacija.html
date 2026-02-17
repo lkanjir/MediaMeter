@@ -1,0 +1,28 @@
+<nav class="navigacija">
+    <div class="navigacija-lijevo">
+        <a [routerLink]="['/pocetna']">Početna</a>
+
+        @if(razinaPrava() >= 1){
+        <a [routerLink]="['/pretrazivanje']">Pretraživanje</a>
+        <a [routerLink]="['/moj-sadrzaj']">Sadržaj</a>
+        <a [routerLink]="['/kolekcije']">Moje kolekcije</a>
+        }
+
+        @if(razinaPrava() >= 2){
+        <a [routerLink]="['/moderator']">Upravljanje kolekcijama</a>
+        }
+
+        @if(razinaPrava() >= 3){
+        <a [routerLink]="['/admin']">Upravljanje korisnicima</a>
+        }
+    </div>
+
+    <div class="navigacija-desno">
+        @if(prijavljen()){
+        <a class="gumb-prijava" (click)="odjava()">Odjava</a>
+        }
+        @else {
+        <a [routerLink]="['/prijava']" class="gumb-prijava">Prijava</a>
+        }
+    </div>
+</nav>
