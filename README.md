@@ -1,17 +1,4 @@
-# MediaMeter - Legacy
-
-> [!WARNING]
-> **LEGACY VERZIJA**
-> 
-> Ovaj repozitorij sadrži kod web aplikacije razvijene u sklopu kolegija Razvoj web aplikacija.
-> U tijeku je **potpuni rewrite**.
-> 
-> Nova verzija će sadržavati poboljšanja u područjima dizajna backenda i frontenda te  UI/UX-a. 
->
-> Novi repozitorij: [MediaMeter](https://github.com/lkanjir/MediaMeter)
-
-![Status](https://img.shields.io/badge/status-legacy-orange)
-![Rewrite](https://img.shields.io/badge/rewrite-in%20progress-blue)
+# MediaMeter
 
 ## Tehnologije
 - Angular
